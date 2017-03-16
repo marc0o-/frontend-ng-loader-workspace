@@ -1,0 +1,58 @@
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.workspace", version: "latest.release"
+	}
+
+	repositories {
+		maven {
+			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+apply plugin: "com.liferay.gulp"
+
+import com.liferay.gradle.plugins.gulp.ExecuteGulpTask
+
+task compileAndMinifyJS(type: ExecuteGulpTask) {
+	dependsOn npmInstall
+	gulpCommand = 'compileJS:minify'
+}
+
+task pruneNPM(type:Exec) {
+  	commandLine 'cmd', '/c', 'npm prune --production'
+}
+
+task compileJS(type: Copy) {
+	dependsOn compileAndMinifyJS
+	dependsOn pruneNPM
+	from 'package.json'
+	from ('dist') {
+		include '/**/*.js'
+	}
+	from ('.') {
+		include 'node_modules/**/*.js'
+		include 'node_modules/**/package.json'
+		exclude 'node_modules/**/dist'
+	}
+    into 'src/main/resources/META-INF/resources'
+}
+
+task cleanJS(type: Delete) {
+    delete "dist"
+    delete "build"
+    delete "src/main/resources/META-INF/resources"
+}
+
+task cleanALL(type: Delete) {
+	dependsOn cleanJS
+	dependsOn cleanNPM
+}
+
+clean {
+	dependsOn cleanJS
+}
+
+assemble  {
+	dependsOn compileJS
+}

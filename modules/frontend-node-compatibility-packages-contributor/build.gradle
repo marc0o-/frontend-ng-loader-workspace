@@ -1,3 +1,20 @@
 dependencies {
 	compile group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
 }
+
+task npmInstallProd(type:Exec) {
+	workingDir 'src/main/resources/META-INF/resources'
+  	commandLine 'cmd', '/c', 'npm install --production'
+}
+
+task cleanNPMStuff(type:Delete) {
+	delete "src/main/resources/META-INF/resources/node_modules"
+}
+
+clean {
+	dependsOn cleanNPMStuff
+}
+
+assemble {
+	dependsOn npmInstallProd
+}

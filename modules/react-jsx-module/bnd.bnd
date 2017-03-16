@@ -1,0 +1,5 @@
+Bundle-Name: react-jsx-module
+Bundle-SymbolicName: react.jsx.module
+Bundle-Version: 1.0.0
+Liferay-Package-Config: /META-INF/resources/package.json
+Web-ContextPath: /react-jsx-module

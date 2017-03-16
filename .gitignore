@@ -1,9 +1,16 @@
+.classpath
+.project
 .gradle
 .settings
 
 **/.settings
 modules/*/bin
 modules/*/build
+modules/*/node_modules
+modules/*/dist
+modules/*/src/main/resources/META-INF/node_modules
+modules/*/src/main/resources/META-INF/package.json
+modules/*/src/main/resources/META-INF/**/*.js
+modules/*/src/main/resources/META-INF/**/package.json
 
 bundles
-
